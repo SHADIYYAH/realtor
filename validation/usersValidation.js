@@ -12,4 +12,5 @@ const validateUserDetails = (data)=> {
         return userSchema.validate(data)
 }
 
+
 module.exports = validateUserDetails

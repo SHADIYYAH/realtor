@@ -1,6 +1,6 @@
 const dbConnection = require("../config/db")
 const userValidation = require("../validation/usersValidation")
-const {getUserFromDB, getAllUsersFromDB} = require("../model/userModel")
+const {getUserFromDB, getAllUsersFromDB, updateUserInDB} = require("../model/userModel")
 const {v4:uuidv4}= require("uuid")
 
 const newUser = async(req, res)=> {
@@ -65,7 +65,7 @@ const getUser = async(req, res)=> {
 }
 
 
-const getAllUsers = async (req, res)=> {
+const getAllUsers = async (req, res)=> {    
     try {
         const allUsers = await getAllUsersFromDB()
         res.status(200).json({
@@ -87,11 +87,34 @@ const getAllUsers = async (req, res)=> {
 
 
 const updateUser = async(req, res) => {
-    const { email } = req.params
-    const {username, password, phone}= req.body
-    const resultFromUpdate = await updateUserInDB()
 
+        const { email } = req.params
+    try{
+        //const {username, password, phone}= req.body
+        //update users set username = "afeez" where email = "afeez@xmail"
+        const keys = Object.keys(req.body)
+        const data = keys.map(item => {
+            return `${item} = "${req.body[item]}"`
+        })
+
+         const updateRes = await updateUserInDB(data, email)
+         res.status(200).json({
+            status: "true",
+            msg: "user updated successfully",   
+            // data: updateRes
+         })
+
+    } catch (err) {
+        res.status(500).json({
+            status: "false",
+            msg: err.message || "something went wrong"
+        })
+    }      
+        
+
+        
 }
 
 
-module.exports  = {newUser, getUser, getAllUsers}
+
+module.exports  = {newUser, getUser, getAllUsers, updateUser}
