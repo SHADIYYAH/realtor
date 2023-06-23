@@ -1,6 +1,7 @@
 const express = require("express")
 const dbConnection = require("./config/db")
 const userRouter = require("./router/userRoutes")
+const listingRouter = require('./router/listingRoutes')
 const bodyParser = require("body-parser")
 
 const app = express()
@@ -8,6 +9,7 @@ const PORT = 3310
 
 app.use(bodyParser.json())
 app.use("/api/realtor", userRouter)
+app.use("/api/realtor", listingRouter)
 // app.use("/api/realtor", userRouter)
 
 dbConnection.connect((err)=>{

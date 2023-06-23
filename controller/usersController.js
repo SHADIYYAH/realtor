@@ -36,6 +36,7 @@ const newUser = async(req, res)=> {
                 status: "false",
                 msg: err.message || "Something went wrong..."
             })
+            
         }
 
         res.status(201).json({
